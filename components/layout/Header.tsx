@@ -17,6 +17,8 @@ import {
   Shield,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import NotificationBell from "@/components/notifications/NotificationBell";
+import NotificationDropdown from "@/components/notifications/NotificationDropdown";
 
 const NAV_LINKS = [
   { label: "Phòng trọ", href: "/rooms?type=room" },
@@ -31,6 +33,7 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   // Đóng user menu khi click outside
@@ -75,7 +78,20 @@ export default function Header() {
 
           <div className="flex items-center gap-4">
             {isAuthenticated && user ? (
-              <div className="relative" ref={userMenuRef}>
+              <>
+                {/* Notification bell */}
+                <div className="relative">
+                  <NotificationBell
+                    onClick={() => setNotifOpen((v) => !v)}
+                    variant="dark"
+                  />
+                  <NotificationDropdown
+                    isOpen={notifOpen}
+                    onClose={() => setNotifOpen(false)}
+                  />
+                </div>
+
+                <div className="relative" ref={userMenuRef}>
                 <button
                   onClick={() => setUserMenuOpen((v) => !v)}
                   className="flex items-center gap-1.5 hover:underline"
@@ -134,6 +150,7 @@ export default function Header() {
                   </div>
                 )}
               </div>
+              </>
             ) : (
               <>
                 <Link href="/login" className="hover:underline">

@@ -1,7 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { MoreVertical, Eye, CheckCircle, XCircle, EyeOff, RotateCcw, Trash2 } from "lucide-react";
+import {
+  MoreVertical,
+  Eye,
+  CheckCircle,
+  XCircle,
+  EyeOff,
+  RotateCcw,
+  Trash2,
+} from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import type { Room } from "@/types";
 import RoomStatusBadge from "@/components/admin/RoomStatusBadge";
@@ -24,7 +32,15 @@ interface Props {
   onDelete: (room: Room) => void;
 }
 
-function ActionMenu({ room, onView, onApprove, onReject, onHide, onRestore, onDelete }: {
+function ActionMenu({
+  room,
+  onView,
+  onApprove,
+  onReject,
+  onHide,
+  onRestore,
+  onDelete,
+}: {
   room: Room;
   onView: () => void;
   onApprove: () => void;
@@ -38,15 +54,24 @@ function ActionMenu({ room, onView, onApprove, onReject, onHide, onRestore, onDe
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      if (ref.current && !ref.current.contains(e.target as Node))
+        setOpen(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const btn = (icon: React.ReactNode, label: string, action: () => void, className = "") => (
+  const btn = (
+    icon: React.ReactNode,
+    label: string,
+    action: () => void,
+    className = "",
+  ) => (
     <button
-      onClick={() => { action(); setOpen(false); }}
+      onClick={() => {
+        action();
+        setOpen(false);
+      }}
       className={`flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-50 rounded-lg transition-colors ${className}`}
     >
       {icon} {label}
@@ -64,10 +89,24 @@ function ActionMenu({ room, onView, onApprove, onReject, onHide, onRestore, onDe
       {open && (
         <div className="absolute right-0 top-8 bg-white border border-gray-100 rounded-xl shadow-lg z-20 py-1 w-44">
           {btn(<Eye size={14} />, "Xem chi tiết", onView, "text-gray-700")}
-          {room.status === "pending" && btn(<CheckCircle size={14} />, "Duyệt phòng", onApprove, "text-green-600")}
-          {room.status === "pending" && btn(<XCircle size={14} />, "Từ chối", onReject, "text-red-500")}
-          {room.status === "active" && btn(<EyeOff size={14} />, "Ẩn phòng", onHide, "text-orange-500")}
-          {(room.status === "hidden") && btn(<RotateCcw size={14} />, "Khôi phục", onRestore, "text-blue-500")}
+          {room.status === "pending" &&
+            btn(
+              <CheckCircle size={14} />,
+              "Duyệt phòng",
+              onApprove,
+              "text-green-600",
+            )}
+          {room.status === "pending" &&
+            btn(<XCircle size={14} />, "Từ chối", onReject, "text-red-500")}
+          {room.status === "active" &&
+            btn(<EyeOff size={14} />, "Ẩn phòng", onHide, "text-orange-500")}
+          {room.status === "hidden" &&
+            btn(
+              <RotateCcw size={14} />,
+              "Khôi phục",
+              onRestore,
+              "text-blue-500",
+            )}
           {room.status !== "deleted" && (
             <div className="border-t border-gray-100 mt-1 pt-1">
               {btn(<Trash2 size={14} />, "Xóa phòng", onDelete, "text-red-500")}
@@ -79,12 +118,24 @@ function ActionMenu({ room, onView, onApprove, onReject, onHide, onRestore, onDe
   );
 }
 
-export default function RoomTable({ rooms, loading, onView, onApprove, onReject, onHide, onRestore, onDelete }: Props) {
+export default function RoomTable({
+  rooms,
+  loading,
+  onView,
+  onApprove,
+  onReject,
+  onHide,
+  onRestore,
+  onDelete,
+}: Props) {
   if (loading) {
     return (
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="flex items-center gap-4 px-5 py-4 border-b border-gray-50 animate-pulse">
+          <div
+            key={i}
+            className="flex items-center gap-4 px-5 py-4 border-b border-gray-50 animate-pulse"
+          >
             <div className="w-14 h-14 bg-gray-200 rounded-lg flex-shrink-0" />
             <div className="flex-1 space-y-2">
               <div className="h-4 bg-gray-200 rounded w-2/3" />
@@ -123,19 +174,30 @@ export default function RoomTable({ rooms, loading, onView, onApprove, onReject,
         return (
           <div
             key={roomId || idx}
-            className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] items-center px-5 py-4 border-b border-gray-50 last:border-0 hover:bg-gray-50/50 transition-colors"
+            className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] items-center px-5 py-4 border-b border-gray-50 last:border-0 hover:bg-gray-50/50 transition-colors pb-20"
           >
             {/* Phòng */}
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-14 h-14 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                 {thumbnail ? (
-                  <Image src={thumbnail} alt={room.title} width={56} height={56} className="object-cover w-full h-full" unoptimized />
+                  <Image
+                    src={thumbnail}
+                    alt={room.title}
+                    width={56}
+                    height={56}
+                    className="object-cover w-full h-full"
+                    unoptimized
+                  />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-300 text-xl">🏠</div>
+                  <div className="w-full h-full flex items-center justify-center text-gray-300 text-xl">
+                    🏠
+                  </div>
                 )}
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-semibold text-gray-800 truncate">{room.title}</p>
+                <p className="text-sm font-semibold text-gray-800 truncate">
+                  {room.title}
+                </p>
                 <p className="text-xs text-gray-400 mt-0.5">
                   👁 {room.views} · ♥ {room.favorite_count}
                 </p>
@@ -144,7 +206,9 @@ export default function RoomTable({ rooms, loading, onView, onApprove, onReject,
 
             {/* Loại / Giá */}
             <div>
-              <p className="text-xs text-gray-500">{ROOM_TYPE_LABEL[room.room_type] ?? room.room_type}</p>
+              <p className="text-xs text-gray-500">
+                {ROOM_TYPE_LABEL[room.room_type] ?? room.room_type}
+              </p>
               <p className="text-sm font-semibold text-orange-500">
                 {room.price.toLocaleString("vi-VN")}đ
               </p>

@@ -1,9 +1,11 @@
 "use client";
 
-import { Bell, Search, Menu } from "lucide-react";
+import { Search, Menu } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
 import { useState } from "react";
+import NotificationBell from "@/components/notifications/NotificationBell";
+import NotificationDropdown from "@/components/notifications/NotificationDropdown";
 
 interface AdminTopbarProps {
   onMobileMenuToggle?: () => void;
@@ -12,6 +14,7 @@ interface AdminTopbarProps {
 export default function AdminTopbar({ onMobileMenuToggle }: AdminTopbarProps) {
   const { user } = useAuth();
   const [searchValue, setSearchValue] = useState("");
+  const [notifOpen, setNotifOpen] = useState(false);
 
   return (
     <header className="h-16 bg-white border-b border-gray-100 flex items-center gap-4 px-6 shadow-sm">
@@ -43,12 +46,15 @@ export default function AdminTopbar({ onMobileMenuToggle }: AdminTopbarProps) {
 
       <div className="ml-auto flex items-center gap-3">
         {/* Notification bell */}
-        <button className="relative p-2 rounded-full hover:bg-gray-100 transition-colors">
-          <Bell size={18} className="text-gray-600" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
-        </button>
+        <div className="relative">
+          <NotificationBell onClick={() => setNotifOpen((v) => !v)} />
+          <NotificationDropdown
+            isOpen={notifOpen}
+            onClose={() => setNotifOpen(false)}
+          />
+        </div>
 
-        {/* Admin badge */}
+        {/* Admin info */}
         <div className="flex items-center gap-2">
           {user?.avatar_url &&
           (user.avatar_url.startsWith("http") ||

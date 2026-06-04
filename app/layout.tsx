@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { NotificationProvider } from "@/contexts/NotificationContext";
 
 export const metadata: Metadata = {
   title: "AI Guesthouse - Tìm phòng trọ thông minh",
@@ -15,7 +16,11 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <NotificationProvider>
+            {children}
+          </NotificationProvider>
+        </AuthProvider>
       </body>
     </html>
   );
