@@ -15,6 +15,7 @@ let _refreshQueue: Array<(token: string | null) => void> = [];
 
 export const tokenStore = {
   setAccessToken: (t: string | null) => {
+    console.log("[tokenStore] setAccessToken:", t ? t.slice(0, 20) + "..." : null);
     _accessToken = t;
   },
   getAccessToken: () => _accessToken,

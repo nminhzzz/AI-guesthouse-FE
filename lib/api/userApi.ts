@@ -22,6 +22,18 @@ export const userApi = {
   updateUser: (id: number, formData: FormData) =>
     apiClient.put<User>(`/users/${id}`, formData),
 
+  // Update user fields qua JSON (không có avatar)
+  patchUser: (id: number, data: Partial<{
+    name: string;
+    email: string;
+    phone: string;
+    role: string;
+    password: string;
+    is_active: boolean;
+    is_verified: boolean;
+  }>) =>
+    apiClient.patch<User>(`/users/${id}`, data),
+
   deleteUser: (id: number, hardDelete = false) =>
     apiClient.delete(`/users/${id}?hard_delete=${hardDelete}`),
 
